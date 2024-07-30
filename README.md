@@ -42,7 +42,7 @@ Example Playbook
                   docker_users:
                     - aecid
 
-         - role: hostname
+         - role: ghostserver
            vars:
                ghostserver_user: "ghosts"
 ```
