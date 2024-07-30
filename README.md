@@ -1,38 +1,58 @@
-Role Name
-=========
+Ansible role to install ghostserver
+===================================
 
-A brief description of the role goes here.
+This role installs a [ghosts server](https://github.com/cmu-sei/GHOSTS) using docker-compose
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+A linux distribution 
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+```yaml
+ghostserver_user: "aecid"
+ghostserver_userhome: "/home/{{ ghostserver_user }}"
+ghostserver_dockerurl: "https://raw.githubusercontent.com/cmu-sei/GHOSTS/master/src/Ghosts.Api/docker-compose.yml"
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+This role requires [docker and docker compose](https://github.com/geerlingguy/ansible-role-docker) to be installed.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
 
+```yaml
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+          - role: geerlingguy_docker
+            vars:
+                  docker_edition: 'ce'
+                  docker_service_manage: true
+                  docker_service_state: started
+                  docker_service_enabled: true
+                  docker_restart_handler_state: restarted
+                  docker_install_compose_plugin: true
+                  docker_compose_package: docker-compose-plugin
+                  docker_compose_package_state: present
+                  docker_users:
+                    - aecid
+
+         - role: hostname
+           vars:
+               ghostserver_user: "ghosts"
+```
 
 License
 -------
 
-BSD
+GPL-3.0
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Wolfgang Hotwagner
